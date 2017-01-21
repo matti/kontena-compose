@@ -34,3 +34,13 @@ Clean docker (everything):
 bin/remote_destroy docker NODEHOSTNAME
 bin/remote_destroy docker MASTERHOSTNAME
 ```
+
+
+# PRO-TIPS
+
+## ETCD over public network (expose weave port)
+
+```
+kontena node add FIRSTNODENAME region=other-region
+```
+
