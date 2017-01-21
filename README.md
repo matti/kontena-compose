@@ -20,7 +20,7 @@ bin/setup http://192.168.99.100:9292   # Do the master setup dance with Kontena 
 Start node in the same (docker-)machine with the master:
 
 ```
-cd node && bin/initialize 1.0.4 192.168.99.100  # Safe to ^C
+cd node && bin/initialize 1.0.4 ws://192.168.99.100:9292  # Safe to ^C
 cd ..
 watch -n 1 kontena node ls
 kontena service create redis redis
@@ -68,6 +68,13 @@ bin/remote_destroy docker MASTERHOSTNAME
 
 
 # PRO-TIPS
+
+## Let's Encrypt cert for master
+
+```
+# only for remote (let's encrypt needs to talk)
+bin/remote_initialize master MASTERHOSTNAME 1.0.4 localhost master.yourdomain.com letsencrypt@notifications.com
+```
 
 ## ETCD over public network (expose weave port)
 

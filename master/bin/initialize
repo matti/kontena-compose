@@ -4,5 +4,6 @@ source "../lib/common.sh"
 
 docker-compose up -d mongodb
 docker-compose up -d master
+docker-compose up -d haproxy
 docker-compose logs -f master
 

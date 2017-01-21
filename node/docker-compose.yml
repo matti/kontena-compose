@@ -6,7 +6,7 @@ services:
   agent:
     image: kontena/agent:${KONTENA_VERSION}
     environment:
-      - KONTENA_URI=ws://${KONTENA_MASTER_HOST}:9292
+      - KONTENA_URI=${KONTENA_MASTER_URI}
       - KONTENA_TOKEN=todotoken
     network_mode: host
     restart: unless-stopped

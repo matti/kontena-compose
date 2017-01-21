@@ -23,5 +23,19 @@ services:
     volumes:
       - mongodb_master:/data/db
 
+  haproxy:
+    image: kontena/haproxy:latest
+    restart: unless-stopped
+    environment:
+      - SSL_CERT=**None**
+      - BACKENDS=kontena_master_1:9292
+      - LE_DOMAINS=${KONTENA_MASTER_LE_CERT_HOSTNAME}
+      - LE_EMAIL=${KONTENA_MASTER_LE_CERT_EMAIL}
+    depends_on:
+      - master
+    ports:
+      - 80:80
+      - 443:443
+
 volumes:
   mongodb_master:
