@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+source "lib/remote_common.sh"
+
+ssh $HOST "mkdir kontena; mkdir kontena/lib; mkdir kontena/docker; mkdir kontena/$COMPONENT" || true
+
+rsync -av -e ssh --delete-after docker/ $HOST:kontena/docker/
+rsync -av -e ssh --delete-after $COMPONENT/ $HOST:kontena/$COMPONENT/
+
+scp lib/common.sh $HOST:kontena/lib/common.sh
+
+ssh $HOST sh kontena/docker/bin/initialize

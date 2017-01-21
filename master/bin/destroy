@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+source "../lib/common.sh"
+
+docker-compose stop -t 0
+docker-compose down -v

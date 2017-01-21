@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+source "../lib/common.sh"
+
+docker-compose up agent
+docker-compose logs -f agent

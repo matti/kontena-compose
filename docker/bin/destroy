@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+source "../lib/common.sh"
+
+docker ps -aq | xargs docker stop
+docker ps -aq | xargs docker rm
+docker images -q | xargs docker rmi

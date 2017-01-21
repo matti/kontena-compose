@@ -1,0 +1,27 @@
+version: "2.1"
+
+services:
+  master:
+    image: kontena/server:${KONTENA_VERSION}
+    ports:
+      - 9292:9292
+    environment:
+      - RACK_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/kontena_master
+      - VAULT_KEY=asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
+      - VAULT_IV=kljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljh
+      - ACME_ENDPOINT=https://acme-staging.api.letsencrypt.org/
+      - INITIAL_ADMIN_CODE=initialadmincode
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:3.0
+    restart: unless-stopped
+    command: mongod --smallfiles
+    volumes:
+      - mongodb_master:/data/db
+
+volumes:
+  mongodb_master:

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+source "lib/remote_common.sh"
+
+shift
+shift
+
+ssh $HOST "cd kontena/$COMPONENT && sudo bin/initialize" $@

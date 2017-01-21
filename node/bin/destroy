@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+source "../lib/common.sh"
+
+docker-compose stop -t 0
+docker-compose down -v
+
+for ORPHAN_CONTAINER in "kontena-etcd kontena-ipam-plugin weave kontena-cadvisor"; do
+  set +e
+    docker stop -t 0 $ORPHAN_CONTAINER
+    docker rm $ORPHAN_CONTAINER
+  set -e
+done
+
+echo "destroyed."
