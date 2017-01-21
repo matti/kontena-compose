@@ -7,18 +7,19 @@ Tested with: coreos stable (01/21/2017) and ubuntu 16.04
 ## Setup
 Ensure you have ssh access to the machines and:
 
+### Master:
 ```
 bin/remote_deploy master MASTERHOSTNAME
 bin/remote_initialize master MASTERHOSTNAME
 bin/setup http://MASTERHOSTNAME:9292
-
-kontena service create redis redis
-kontena service scale redis 3
 ```
 
+### Node:
 ```
 bin/remote_deploy node NODEHOSTNAME
 bin/remote_initialize node NODEHOSTNAME 1.0.4 MASTERHOSTNAME
+kontena service create redis redis
+kontena service scale redis 3
 ```
 
 ## Teardown
