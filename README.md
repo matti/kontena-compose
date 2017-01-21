@@ -11,6 +11,9 @@ Ensure you have ssh access to the machines and:
 bin/remote_deploy master MASTERHOSTNAME
 bin/remote_initialize master MASTERHOSTNAME
 bin/setup http://MASTERHOSTNAME:9292
+
+kontena service create redis redis
+kontena service scale redis 3
 ```
 
 ```
