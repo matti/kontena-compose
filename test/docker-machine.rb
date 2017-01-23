@@ -33,9 +33,12 @@ end
 
 assert_match setup_master_k.out, /Switching scope/
 
-node_initialize_k = Kommando.run_async "$ cd node && bin/initialize 1.0.4 ws://192.168.99.100:9292", {
-  output: true
-}
+node_initialize_k = nil
+override_kommando_timeout_bug nil do
+  node_initialize_k = Kommando.run_async "$ cd node && bin/initialize 1.0.4 ws://192.168.99.100:9292", {
+    output: true
+  }
+end
 
 node_initialize_k.out.on /connection established/ do
   node_initialize_k.in.write "\x03"
