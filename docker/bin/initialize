@@ -11,7 +11,7 @@ case "$distro" in
       sudo apt install -y docker.io=1.12*
     fi
   ;;
-  "\"Container Linux by CoreOS\"")
+  "CoreOS"|"\"Container Linux by CoreOS\"")
   ;;
   *)
     echo "Unsupported distribution: $distro"
