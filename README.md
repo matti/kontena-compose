@@ -82,3 +82,9 @@ bin/remote_initialize master MASTERHOSTNAME 1.0.4 localhost master.yourdomain.co
 kontena node add FIRSTNODENAME region=other-region
 ```
 
+## Trigger CoreOS update
+
+```
+update_engine_client -check_for_update
+journalctl -f
+```
