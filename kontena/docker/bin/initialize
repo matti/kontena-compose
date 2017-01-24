@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+set -e
+export PATH=$PATH:/opt/bin
+
+if [ -e /etc/boot2docker ]; then
+  distro=boot2docker
+else
+  lsb_distro=$(cat /etc/lsb-release | grep DISTRIB_ID | cut -f2 -d=)
+  case "$lsb_distro" in
+    "Ubuntu")
+      distro="ubuntu"
+
+      if $(hash docker); then
+        echo "docker found."
+      else
+        sudo apt install -y docker.io=1.12*
+      fi
+    ;;
+    "CoreOS"|"\"Container Linux by CoreOS\"")
+      distro="coreos"
+    ;;
+    *)
+      echo "Unsupported distribution: $lsb_distro"
+      exit 1
+    ;;
+  esac
+fi
+
+echo "Distribution: $distro"
+
+if $(hash docker-compose); then
+  echo "docker-compose found."
+else
+  echo "compose not found, installing"
+
+  curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
+  chmod +x docker-compose
+
+  case "$distro" in
+    "coreos")
+      sudo mkdir -p /opt/bin
+      sudo mv docker-compose /opt/bin
+    ;;
+    *)
+      sudo mv docker-compose /usr/local/bin
+    ;;
+  esac
+fi

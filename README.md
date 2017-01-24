@@ -1,90 +1,134 @@
 # kontena-compose
 
-aka "mini-kontena" -- Run Kontena with docker-compose in production with docker-compose
+Setups a remote host with SSH to run Kontena with docker-compose.
 
-Tested with: coreos stable (01/21/2017) and ubuntu 16.04
+Tested with: CoreOS stable (01/21/2017) and Ubuntu 16.04
+Providers tested: boot2docker, Azure, OVH, but should work with any provider (as it's just SSH and docker-compose)
 
-## Setup locally on docker-machine
+## Setup
 
-### Master
-```
-cd master                              # to master/ directory
-bin/initialize                         # this will start to tail logs, you can exit safely with ^C
+Requires Ruby so `bundle install` first.
 
-cd ..                                  # (to project root)
-bin/setup http://192.168.99.100:9292   # Do the master setup dance with Kontena Cloud
-```
+Make your host(s) accessible with SSH by having `.ssh/config` setup.
 
-### Node
-
-Start node in the same (docker-)machine with the master:
+For example if you want to run locally on docker-machine:
 
 ```
-cd node && bin/initialize 1.0.4 ws://192.168.99.100:9292  # Safe to ^C
-cd ..
+Host docker-machine
+  HostName 192.168.99.100
+  User docker
+  IdentityFile ~/.docker/machine/machines/default/id_rsa
+```
+
+Or any remote host:
+
+```
+Host your-remote-host
+  HostName 123.123.123.123
+  User core
+```
+
+Verify that `ssh your-remote-host` works without a password.
+
+## Installing master
+
+`bin/initialize` deploys files required (using `bin/deploy`) to the target machine and runs initialization of `master` or `node`
+
+```
+# To use the defaults (:latest Kontena etc)
+bin/initialize remote-host-in-ssh-config master
+
+# .. or to specify a version:
+bin/initialize remote-host-in-ssh-config master --version 1.0.6
+
+# .. or to create a certificate automagically with Let's Encrypt SSL:
+bin/initialize remote-host-in-ssh-config master \
+  --master_le_cert_hostname myhostname-that-points-to-the-public-ip-of-master.example.com \
+  --master_le_cert_email notifications@fromletsencryptaresenthere.com
+```
+
+Master will boot and then logs will be shown -- hit ^C when the master has booted (will only disconnect from logs that can be seen with `bin/logs remote-host-in-ssh-config master`)
+
+Then you'll login to the master, add your user as the admin and create a grid:
+
+```
+# To use the defaults (creates a grid called kontenacompose with ETCD initial size 1)
+bin/setup_master http(s?)://public_ip_or_hostname_of_the_master
+
+# .. or to specify settings:
+bin/setup_master http(s?)://public_ip_or_hostname_of_the_master \
+  --grid_name mygrid \
+  --grid_initial_size 3 \
+  --grid_token mybettertoken
+```
+
+## Adding node(s)
+
+```
+# To use the defaults (connects to master running in ws://localhost:9292 (one machine will be both master and node))
+bin/initialize
+
+# .. or to specify settings
+bin/initialize \
+  --master_uri ws(s?)://public_ip_or_hostname_of_the_master \
+  --grid_token mybettertoken
+```
+
+Hit ^C when the agent has connected and wait for the agent to join:
+
+```
 watch -n 1 kontena node ls
+```
+
+Test your grid:
+
+```
 kontena service create redis redis
-kontena service scale redis 1
+kontena service scale redis 2
+kontena service logs redis
 ```
 
 ### Teardown
+
+To remove nodes (run docker-compose down) use:
 ```
-cd node && bin/destroy && cd ..
-cd master && bin/destroy && cd ..
-
-bin/destroy                            # Remove master from local kontena cli and cloud
-```
-
-## Setup on remote host
-
-Ensure you have ssh access to the machines and:
-
-### Master
-```
-bin/remote_deploy master MASTERHOSTNAME
-bin/remote_initialize master MASTERHOSTNAME
+bin/destroy remote-node1-in-ssh-config node1
+bin/destroy remote-node2-in-ssh-config node2
 ```
 
-### Node
+To remove master AND the entry for the master in Kontena Cloud use:
 ```
-bin/remote_deploy node NODEHOSTNAME
-bin/remote_initialize node NODEHOSTNAME 1.0.4 MASTERHOSTNAME
-kontena service create redis redis
-kontena service scale redis 3
+bin/destroy remote-master-in-ssh-config master
 ```
 
-## Teardown
-
+Optionally to completely clean everything (containers and images) from Docker:
 ```
-bin/remote_destroy node NODEHOSTNAME
-bin/remote_destroy master MASTERHOSTNAME
+bin/destroy remote-host-in-ssh-config docker
 ```
 
-Clean docker (everything):
-```
-bin/remote_destroy docker NODEHOSTNAME
-bin/remote_destroy docker MASTERHOSTNAME
-```
-
-
-# PRO-TIPS
-
-## Let's Encrypt cert for master
+## Testing
 
 ```
-# only for remote (let's encrypt needs to talk)
-bin/remote_initialize master MASTERHOSTNAME 1.0.4 localhost master.yourdomain.com letsencrypt@notifications.com
+ruby test/defaults.rb docker-machine http://192.168.99.100:9292 admin@email.com
 ```
 
-## ETCD over public network (expose weave port)
+## PRO-TIPS
+
+### ETCD over public network (expose weave port)
 
 ```
-kontena node add FIRSTNODENAME region=other-region
+kontena node label add FIRSTNODENAME region=oneregion
+kontena node label add FIRSTNODENAME region=secondregion
 ```
 
-## Trigger CoreOS update
-
+### Trigger CoreOS update manually
 ```
 update_engine_client -check_for_update
 journalctl -f
+sudo reboot
+```
+
+### Remove multiple masters from the cloud
+```
+kontena cloud master ls | grep 588 | cut -f1 -d" " | xargs -L 1 kontena cloud master rm --force
 ```

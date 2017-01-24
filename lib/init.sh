@@ -1,5 +1,5 @@
-COMPONENT=$1
-HOST=$2
+HOST=$1
+COMPONENT=$2
 
 case "$COMPONENT" in
   "master")

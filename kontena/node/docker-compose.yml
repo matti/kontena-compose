@@ -7,7 +7,7 @@ services:
     image: kontena/agent:${KONTENA_VERSION}
     environment:
       - KONTENA_URI=${KONTENA_MASTER_URI}
-      - KONTENA_TOKEN=todotoken
+      - KONTENA_TOKEN=${KONTENA_GRID_TOKEN}
     network_mode: host
     restart: unless-stopped
     volumes:

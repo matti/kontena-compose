@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+. "kontena/support/env.sh"
+
+ruby lib/setup_master.rb $1 $2

@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -e
-source "../lib/common.sh"
+. "../support/common.sh"
 
 docker ps -aq | xargs docker stop
 docker ps -aq | xargs docker rm

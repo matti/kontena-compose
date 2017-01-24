@@ -1,3 +1,10 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env sh
+set -e
+. "lib/init.sh"
+. "kontena/support/env.sh"
 
-require_relative "../lib/destroy.rb"
+ssh $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
+
+if [ "$COMPONENT" == "master" ]; then
+  ruby lib/destroy.rb
+fi

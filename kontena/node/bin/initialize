@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -e
-source "../lib/common.sh"
+. "../support/common.sh"
 
 docker-compose up -d agent
 docker-compose logs -f agent
