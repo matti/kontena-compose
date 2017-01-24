@@ -43,6 +43,7 @@ bin/initialize remote-host-in-ssh-config master --version 1.0.6
 
 # .. or to create a certificate automagically with Let's Encrypt SSL:
 bin/initialize remote-host-in-ssh-config master \
+  --version 1.0.6 \
   --master_le_cert_hostname myhostname-that-points-to-the-public-ip-of-master.example.com \
   --master_le_cert_email notifications@fromletsencryptaresenthere.com
 ```
@@ -53,10 +54,11 @@ Then you'll login to the master, add your user as the admin and create a grid:
 
 ```
 # To use the defaults (creates a grid called kontenacompose with ETCD initial size 1)
-bin/setup_master http(s?)://public_ip_or_hostname_of_the_master
+bin/setup_master http(s?)://public_ip_or_hostname_of_the_master your.kontena@cloud.email.com
 
 # .. or to specify settings:
-bin/setup_master http(s?)://public_ip_or_hostname_of_the_master \
+bin/setup_master http(s?)://public_ip_or_hostname_of_the_master your.kontena@cloud.email.com \
+  --master_name mymaster \
   --grid_name mygrid \
   --grid_initial_size 3 \
   --grid_token mybettertoken
@@ -66,10 +68,11 @@ bin/setup_master http(s?)://public_ip_or_hostname_of_the_master \
 
 ```
 # To use the defaults (connects to master running in ws://localhost:9292 (one machine will be both master and node))
-bin/initialize
+bin/initialize remote-host-in-ssh-config node
 
 # .. or to specify settings
-bin/initialize \
+bin/initialize remote-host-in-ssh-config node \
+  --version 1.0.6 \
   --master_uri ws(s?)://public_ip_or_hostname_of_the_master \
   --grid_token mybettertoken
 ```
