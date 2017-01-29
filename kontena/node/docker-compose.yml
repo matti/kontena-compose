@@ -1,10 +1,9 @@
 version: "2.1"
 
-#    container_name: kontena-agent
-
 services:
   agent:
     image: kontena/agent:${KONTENA_VERSION}
+    container_name: kontena-agent
     environment:
       - KONTENA_URI=${KONTENA_MASTER_URI}
       - KONTENA_TOKEN=${KONTENA_GRID_TOKEN}

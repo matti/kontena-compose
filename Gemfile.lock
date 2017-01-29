@@ -32,6 +32,7 @@ GEM
     ruby_dig (0.0.2)
     safe_yaml (1.0.4)
     semantic (1.6.0)
+    slop (4.4.1)
     tty-color (0.3.0)
     tty-cursor (0.3.0)
     tty-prompt (0.7.1)
@@ -48,6 +49,7 @@ DEPENDENCIES
   byebug
   kommando
   kontena-cli
+  slop
 
 BUNDLED WITH
    1.14.0

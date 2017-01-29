@@ -1,22 +1,40 @@
 require_relative "./base"
+require "slop"
 
-master_url = ARGV[0]
-admin_email = ARGV[1]
+opts = Slop.parse do |o|
+  o.banner = "usage: bin/setup_master http(s)://master_host admin@email.com"
+  o.separator ""
+  o.separator "Setup: master"
+  o.string "--master_name", "Master name [composemaster]",
+    default: "composemaster"
+  o.string "--grid_name", "The first grid name [composegrid]",
+    default: "composegrid"
+  o.integer "--grid_initial_size", "The initial size of the first grid [1]",
+    default: 1
+  o.string "--grid_token", "Token [defaultinsecuregridtoken]",
+    default: "defaultinsecuregridtoken"
 
-master_name = ENV['KONTENA_MASTER_NAME']
-grid_name = ENV['KONTENA_GRID_NAME']
-grid_initial_size = ENV['KONTENA_GRID_INITIAL_SIZE']
-grid_token = ENV['KONTENA_GRID_TOKEN']
+  o.on '--help', "This help text" do
+    puts o
+    exit 1
+  end
+end
 
-puts "-- config --"
-puts "  master name: #{master_name}"
-puts "  master url: #{master_url}"
-puts "  admin email: #{admin_email}"
-puts "  grid name: #{grid_name}"
-puts "  grid initial_size: #{grid_initial_size}"
-puts "  grid token: #{grid_token}"
 
-sleep 3
+master_url = opts.arguments[0]
+admin_email = opts.arguments[1]
+
+master_name = opts[:master_name]
+grid_name = opts[:grid_name]
+grid_initial_size = opts[:grid_initial_size]
+grid_token = opts[:grid_token]
+
+puts "master name: #{master_name}"
+puts "master url: #{master_url}"
+puts "admin email: #{admin_email}"
+puts "grid name: #{grid_name}"
+puts "grid initial_size: #{grid_initial_size}"
+puts "grid token: #{grid_token}"
 
 # login with initial admin code
 login_k = Kommando.puts "kontena master login --name #{master_name} --code initialadmincode #{master_url}"

@@ -1,10 +1,9 @@
 #!/usr/bin/env sh
 set -e
 . "lib/init.sh"
-. "kontena/support/env.sh"
 
 ssh $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
 
 if [ "$COMPONENT" == "master" ]; then
-  ruby lib/destroy.rb
+ ruby lib/destroy.rb
 fi

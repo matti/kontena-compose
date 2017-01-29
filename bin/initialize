@@ -1,11 +1,18 @@
 #!/usr/bin/env sh
 set -e
 . "lib/init.sh"
+
+set +e
+  env_contents=$(ruby lib/environment.rb $COMPONENT $@)
+  if [ $? != 0 ]; then
+    printf "$env_contents\n"
+    exit 1
+  fi
+set -e
+
+printf "$env_contents" | tee > kontena/$COMPONENT/env
+
 bin/deploy $HOST $COMPONENT
 
 ssh $HOST sh kontena/docker/bin/initialize
-
-shift
-shift
-
-ssh $HOST "cd kontena/$COMPONENT && sudo bin/initialize" $@
+ssh $HOST "cd kontena/$COMPONENT && sudo bin/initialize"

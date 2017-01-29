@@ -2,8 +2,10 @@
 
 Setups a remote host with SSH to run Kontena with docker-compose.
 
-Tested with: CoreOS stable (01/21/2017) and Ubuntu 16.04
+Tested with: Ubuntu 16.04
 Providers tested: boot2docker, Azure, OVH, but should work with any provider (as it's just SSH and docker-compose)
+
+CoreOS support needs some fixing on the CoreOS itself: https://github.com/kontena/kontena/blob/master/cli/lib/kontena/machine/cloud_config/cloudinit.yml#L22-L40
 
 ## Setup
 
@@ -39,14 +41,18 @@ Verify that `ssh your-remote-host` works without a password.
 bin/initialize remote-host-in-ssh-config master
 
 # .. or to specify a version:
-bin/initialize remote-host-in-ssh-config master --version 1.0.6
+bin/initialize remote-host-in-ssh-config master --kontena_version 1.0.6
 
 # .. or to create a certificate automagically with Let's Encrypt SSL:
 bin/initialize remote-host-in-ssh-config master \
-  --version 1.0.6 \
+  --kontena_version 1.0.6 \
   --master_le_cert_hostname myhostname-that-points-to-the-public-ip-of-master.example.com \
   --master_le_cert_email notifications@fromletsencryptaresenthere.com
+
+# .. for even more settings:
+bin/initialize remote-host-in-ssh-config master --help
 ```
+
 
 Master will boot and then logs will be shown -- hit ^C when the master has booted (will only disconnect from logs that can be seen with `bin/logs remote-host-in-ssh-config master`)
 
@@ -67,12 +73,12 @@ bin/setup_master http(s?)://public_ip_or_hostname_of_the_master your.kontena@clo
 ## Adding node(s)
 
 ```
-# To use the defaults (connects to master running in ws://localhost:9292 (one machine will be both master and node))
+# To use the defaults (connects to master running in ws://localhost (one machine will be both master and node))
 bin/initialize remote-host-in-ssh-config node
 
 # .. or to specify settings
 bin/initialize remote-host-in-ssh-config node \
-  --version 1.0.6 \
+  --kontena_version 1.0.6 \
   --master_uri ws(s?)://public_ip_or_hostname_of_the_master \
   --grid_token mybettertoken
 ```
@@ -112,7 +118,7 @@ bin/destroy remote-host-in-ssh-config docker
 ## Testing
 
 ```
-ruby test/defaults.rb docker-machine http://192.168.99.100:9292 admin@email.com
+ruby test/defaults.rb docker-machine http://192.168.99.100 admin@email.com
 ```
 
 ## PRO-TIPS

@@ -1,10 +1,4 @@
 #!/usr/bin/env sh
 set -e
 
-master_url=$1
-admin_email=$2
-shift; shift
-
-. "kontena/support/env.sh"
-
-ruby lib/setup_master.rb $master_url $admin_email
+ruby lib/setup_master.rb $@

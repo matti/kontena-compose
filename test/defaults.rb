@@ -5,14 +5,12 @@ $target_host_url = ARGV[1]
 $admin_email = ARGV[2]
 
 def cleanup
-  destroy_master_k = Kommando.run "$ bin/destroy #{$target_host} master", {
-    output: true
-  }
   destroy_node_k = Kommando.run "$ bin/destroy #{$target_host} node", {
     output: true
   }
-  destroy_k = Kommando.run "$ bin/destroy", {
-    output: true
+  destroy_master_k = Kommando.run "$ bin/destroy #{$target_host} master", {
+    output: true,
+    timeout: 30
   }
 end
 
