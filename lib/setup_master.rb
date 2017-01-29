@@ -1,4 +1,5 @@
 require_relative "./base"
+require "securerandom"
 require "slop"
 
 opts = Slop.parse do |o|
@@ -11,8 +12,8 @@ opts = Slop.parse do |o|
     default: "composegrid"
   o.integer "--grid_initial_size", "The initial size of the first grid [1]",
     default: 1
-  o.string "--grid_token", "Token [defaultinsecuregridtoken]",
-    default: "defaultinsecuregridtoken"
+  o.string "--grid_token", "Token [random32]",
+    default: "#{SecureRandom.hex}"
 
   o.on '--help', "This help text" do
     puts o

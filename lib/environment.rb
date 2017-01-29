@@ -1,4 +1,5 @@
 require "slop"
+require "securerandom"
 
 opts = Slop.parse do |o|
   o.separator ""
@@ -16,10 +17,10 @@ opts = Slop.parse do |o|
   o.separator "Master"
   o.string "--master_mongodb_uri", "MongoDB URI [mongodb://mongodb:27017/kontena_master]",
     default: "mongodb://mongodb:27017/kontena_master"
-  o.string "--master_vault_key", "Vault key [asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf]",
-    default: "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"
-  o.string "--master_vault_iv", "Vault initialization vector [kljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljh]",
-    default: "kljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljhkljh"
+  o.string "--master_vault_key", "Vault key [random64]",
+    default: "#{SecureRandom.hex}#{SecureRandom.hex}"
+  o.string "--master_vault_iv", "Vault initialization vector [random64]",
+    default: "#{SecureRandom.hex}#{SecureRandom.hex}"
   o.string "--master_initial_admin_code", "Initial admin code [initialadmincode]",
     default: "initialadmincode"
   o.string "--master_le_cert_hostname", "Generate Let's Encrypt certificate for hostname (public IP must point to the hostname)"
@@ -29,8 +30,7 @@ opts = Slop.parse do |o|
   o.separator "Node"
   o.string "--master_uri", "WebSocket URI for connection in ws(s)://host:port format [ws://localhost]",
     default: "ws://localhost"
-  o.string "--agent_grid_token", "Token [defaultinsecuregridtoken]",
-    default: "defaultinsecuregridtoken"
+  o.string "--grid_token", "Token [REQUIRED]"
 end
 
 def export_line(key, value)
@@ -46,8 +46,13 @@ when "master"
   export_line "KONTENA_MASTER_LE_CERT_HOSTNAME", opts[:master_le_cert_hostname]
   export_line "KONTENA_MASTER_LE_CERT_EMAIL", opts[:master_le_cert_email]
 when "node"
+  unless opts.grid_token?
+    puts "ERROR: --grid_token must be given"
+    exit 1
+  end
+
   export_line "KONTENA_MASTER_URI", opts[:master_uri]
-  export_line "KONTENA_GRID_TOKEN", opts[:agent_grid_token]
+  export_line "KONTENA_GRID_TOKEN", opts[:grid_token]
 else
   puts opts
   exit 1

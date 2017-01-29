@@ -2,4 +2,4 @@
 set -e
 . "lib/init.sh"
 
-ssh $HOST "cd kontena/$COMPONENT && . ../support/env.sh && docker-compose logs"
+ssh $HOST "cd kontena/$COMPONENT && . env && docker-compose logs"
