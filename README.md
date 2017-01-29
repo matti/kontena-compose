@@ -125,6 +125,8 @@ ruby test/defaults.rb docker-machine http://192.168.99.100 admin@email.com
 
 ### ETCD over public network (expose weave port)
 
+If you don't expose all ports to all nodes, then the traffic will be routed as multi-hop.
+
 ```
 kontena node label add FIRSTNODENAME region=oneregion
 kontena node label add FIRSTNODENAME region=secondregion
@@ -141,3 +143,7 @@ sudo reboot
 ```
 kontena cloud master ls | grep 588 | cut -f1 -d" " | xargs -L 1 kontena cloud master rm --force
 ```
+
+### Let's Encrypt firewall
+
+https traffic needs to be allowed from anywhere (https://community.letsencrypt.org/t/lets-encrypt-and-firewall-rules/18641)
