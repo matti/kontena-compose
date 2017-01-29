@@ -1,4 +1,5 @@
 require_relative "../lib/base"
+require "byebug"
 
 $target_host = ARGV[0]
 $target_host_url = ARGV[1]
@@ -42,11 +43,13 @@ override_kommando_timeout_bug nil do
   }
 end
 
+grid_token = (setup_master_k.out.match /grid token: (\w*)/)[1]
+
 assert_match setup_master_k.out, /Switching scope/
 
 node_initialize_k = nil
 override_kommando_timeout_bug nil do
-  node_initialize_k = Kommando.run_async "$ bin/initialize #{$target_host} node", {
+  node_initialize_k = Kommando.run_async "$ bin/initialize #{$target_host} node --grid_token #{grid_token}", {
     output: true
   }
 end
