@@ -56,6 +56,8 @@ bin/initialize remote-host-in-ssh-config master --help
 
 Master will boot and then logs will be shown -- hit ^C when the master has booted (will only disconnect from logs that can be seen with `bin/logs remote-host-in-ssh-config master`)
 
+If you want to see more logs, use `bin/logs remote-host-in-ssh-config master --help`
+
 Then you'll login to the master, add your user as the admin and create a grid:
 
 ```
