@@ -13,7 +13,9 @@ else
       if $(hash docker); then
         echo "docker found."
       else
+        sudo apt update
         sudo apt install -y docker.io=1.12*
+        sudo systemctl start docker
       fi
     ;;
     "CoreOS"|"\"Container Linux by CoreOS\"")
