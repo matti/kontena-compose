@@ -7,6 +7,7 @@ services:
     environment:
       - KONTENA_URI=${KONTENA_MASTER_URI}
       - KONTENA_TOKEN=${KONTENA_GRID_TOKEN}
+      - KONTENA_PEER_INTERFACE=${KONTENA_PEER_INTERFACE}
     network_mode: host
     restart: unless-stopped
     volumes:
