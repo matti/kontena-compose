@@ -2,7 +2,7 @@
 set -e
 . "../support/common.sh"
 
-if [ "$KONTENA_MASTER_MONGODB_URI" == "mongodb://mongodb:27017/kontena_master" ]; then
+if [ "$KONTENA_MASTER_MONGODB_URI" = "mongodb://mongodb:27017/kontena_master" ]; then
   echo "Creating MongoDB instance"
   docker-compose up -d mongodb
 #  docker-compose up -d master
