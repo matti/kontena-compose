@@ -10,5 +10,7 @@ services:
       - KONTENA_PEER_INTERFACE=${KONTENA_PEER_INTERFACE}
     network_mode: host
     restart: unless-stopped
+    labels:
+      - ${KONTENA_NODE_LABEL}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

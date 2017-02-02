@@ -38,6 +38,8 @@ opts = Slop.parse do |o|
   o.string "--grid_token", "Token [REQUIRED]"
   o.string "--peer_interface", "The peer interface for weave [eth0]",
     default: "eth0"
+  o.string "--node-label", "Node label [active]",
+    default: "active"
 end
 
 def export_line(key, value)
@@ -61,6 +63,7 @@ when "node"
   export_line "KONTENA_MASTER_URI", opts[:master_uri]
   export_line "KONTENA_GRID_TOKEN", opts[:grid_token]
   export_line "KONTENA_PEER_INTERFACE", opts[:peer_interface]
+  export_line "KONTENA_NODE_LABEL", opts[:node_label]
 when "mongodb"
   export_line "MONGODB_BIND_IP", opts[:mongodb_bind_ip]
 else
