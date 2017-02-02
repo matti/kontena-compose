@@ -12,8 +12,11 @@ set -e
 
 printf "$env_contents" | tee kontena/$COMPONENT/env
 
+confirm "hit enter to deploy $COMPONENT to $HOST"
 
 bin/deploy $HOST $COMPONENT
+
+confirm "\n\nhit enter to initialize $COMPONENT at $HOST"
 
 ssh $HOST sh kontena/docker/bin/initialize
 ssh $HOST "cd kontena/$COMPONENT && sudo bin/initialize"

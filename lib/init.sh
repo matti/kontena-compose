@@ -1,3 +1,8 @@
+function confirm() {
+  printf "\n$1"
+  read
+}
+
 HOST=$1
 COMPONENT=$2
 shift; shift
