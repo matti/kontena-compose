@@ -10,7 +10,8 @@ services:
       - KONTENA_PEER_INTERFACE=${KONTENA_PEER_INTERFACE}
     network_mode: host
     restart: unless-stopped
-    labels:
-      - ${KONTENA_NODE_LABEL}
+# https://github.com/kontena/kontena/issues/1771, currently done in node/bin/initialize
+#    labels:
+#      - ${KONTENA_NODE_LABEL}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

@@ -2,5 +2,12 @@
 set -e
 . "../support/common.sh"
 
+echo "{
+  \"labels\": [\"$KONTENA_NODE_LABEL\"],
+  \"insecure-registries\": [\"10.81.0.0/16\"]
+}" | sudo tee /etc/docker/daemon.json
+
+sudo systemctl restart docker
+
 docker-compose up -d agent
 docker-compose logs -f agent
