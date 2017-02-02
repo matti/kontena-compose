@@ -14,8 +14,13 @@ opts = Slop.parse do |o|
   end
 
   o.separator ""
+  o.separator "Mongo"
+  o.string "--mongodb_bind_ip", "MongoDB bind IP [0.0.0.0]",
+    default: "0.0.0.0"
+
+  o.separator ""
   o.separator "Master"
-  o.string "--master_mongodb_uri", "MongoDB URI [mongodb://mongodb:27017/kontena_master]",
+  o.string "--master_mongodb_uri", "MongoDB URI (NOTE: if not default, then MongoDB will be skipped) [mongodb://mongodb:27017/kontena_master]",
     default: "mongodb://mongodb:27017/kontena_master"
   o.string "--master_vault_key", "Vault key [random64]",
     default: "#{SecureRandom.hex}#{SecureRandom.hex}"
@@ -56,6 +61,8 @@ when "node"
   export_line "KONTENA_MASTER_URI", opts[:master_uri]
   export_line "KONTENA_GRID_TOKEN", opts[:grid_token]
   export_line "KONTENA_PEER_INTERFACE", opts[:peer_interface]
+when "mongodb"
+  export_line "MONGODB_BIND_IP", opts[:mongodb_bind_ip]
 else
   puts opts
   exit 1

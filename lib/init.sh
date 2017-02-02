@@ -9,6 +9,8 @@ case "$COMPONENT" in
   ;;
   "docker")
   ;;
+  "mongodb")
+  ;;
   *)
     echo "Unknown component: $COMPONENT"
     exit 1

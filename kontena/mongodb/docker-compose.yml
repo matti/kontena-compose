@@ -1,0 +1,14 @@
+version: "2.1"
+
+services:
+  mongodb:
+    image: mongo:3.0
+    restart: unless-stopped
+    command: mongod --smallfiles --bind_ip ${MONGODB_BIND_IP}
+    volumes:
+      - mongodb_master:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  mongodb_master:
