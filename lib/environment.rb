@@ -40,6 +40,18 @@ opts = Slop.parse do |o|
     default: "eth0"
   o.string "--node-label", "Node label [status=active]",
     default: "status=active"
+
+  o.separator ""
+  o.separator "mongo-backup"
+  o.string "--mongo-backup-mongodb-host", "MongoDB host [kontena_mongodb_1]",
+    default: "kontena_mongodb_1"
+  o.boolean "--mongo-backup-lock", "Lock the instance [true]",
+    default: true
+  o.integer "--mongo-backup-hourly-keep", "Number of hourly backups to keep [3]",
+    default: 3
+  o.integer "--mongo-backup-daily-keep", "Number of daily backups to keep [7]",
+    default: 7
+
 end
 
 def export_line(key, value)
@@ -66,6 +78,11 @@ when "node"
   export_line "KONTENA_NODE_LABEL", opts[:node_label]
 when "mongodb"
   export_line "MONGODB_BIND_IP", opts[:mongodb_bind_ip]
+when "mongo-backup"
+  export_line "MONGO_BACKUP_MONGODB_HOST", opts[:mongo_backup_mongodb_host]
+  export_line "MONGO_BACKUP_LOCK", opts[:mongo_backup_lock]
+  export_line "MONGO_BACKUP_HOURLY_KEEP", opts[:mongo_backup_hourly_keep]
+  export_line "MONGO_BACKUP_DAILY_KEEP", opts[:mongo_backup_daily_keep]
 else
   puts opts
   exit 1

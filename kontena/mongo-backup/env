@@ -1,0 +1,6 @@
+export MONGO_BACKUP_MONGODB_HOST="kontena_mongodb_1"
+export MONGO_BACKUP_LOCK="true"
+export MONGO_BACKUP_HOURLY_KEEP="3"
+export MONGO_BACKUP_DAILY_KEEP="7"
+export COMPOSE_PROJECT_NAME="kontena"
+export KONTENA_VERSION="latest"

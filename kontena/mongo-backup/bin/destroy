@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+. "../support/common.sh"
+
+set +e
+docker-compose stop -t 0
+docker-compose down -v
+
+docker volume rm "${COMPOSE_PROJECT_NAME}_mongo_backup_hourly"
+docker volume rm "${COMPOSE_PROJECT_NAME}_mongo_backup_daily"
+set -e

@@ -1,0 +1,28 @@
+version: "2.1"
+
+services:
+  mongo-backup-hourly:
+    image: kontena/mongo-backup
+    environment:
+      - INTERVAL=1h
+      - MONGODB_HOST=${MONGO_BACKUP_MONGODB_HOST}
+      - MONGODB_LOCK=${MONGO_BACKUP_LOCK}
+      - LOCAL_KEEP=${MONGO_BACKUP_HOURLY_KEEP}
+    restart: unless-stopped
+    volumes:
+      - mongo_backup_hourly:/backup
+
+  mongo-backup-daily:
+    image: kontena/mongo-backup
+    environment:
+      - INTERVAL=1d
+      - MONGODB_HOST=${MONGO_BACKUP_MONGODB_HOST}
+      - MONGODB_LOCK=${MONGO_BACKUP_LOCK}
+      - LOCAL_KEEP=${MONGO_BACKUP_DAILY_KEEP}
+    restart: unless-stopped
+    volumes:
+      - mongo_backup_daily:/backup
+
+volumes:
+  mongo_backup_hourly:
+  mongo_backup_daily:

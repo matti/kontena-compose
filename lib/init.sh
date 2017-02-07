@@ -16,6 +16,8 @@ case "$COMPONENT" in
   ;;
   "mongodb")
   ;;
+  "mongo-backup")
+  ;;
   *)
     echo "Unknown component: $COMPONENT"
     exit 1
