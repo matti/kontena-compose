@@ -1,4 +1,7 @@
 function confirm() {
+  if [ "$KONTENA_COMPOSE" = "noninteractive" ]; then
+    return
+  fi
   printf "\n$1"
   read
 }
