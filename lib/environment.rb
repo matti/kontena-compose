@@ -45,8 +45,8 @@ opts = Slop.parse do |o|
   o.separator "mongo-backup"
   o.string "--mongo-backup-mongodb-host", "MongoDB host [kontena_mongodb_1]",
     default: "kontena_mongodb_1"
-  o.boolean "--mongo-backup-lock", "Lock the instance [true]",
-    default: true
+  o.boolean "--mongo-backup-oplog", "Use oplog for backup [false]",
+    default: false
   o.integer "--mongo-backup-hourly-keep", "Number of hourly backups to keep [3]",
     default: 3
   o.integer "--mongo-backup-daily-keep", "Number of daily backups to keep [7]",
@@ -80,7 +80,7 @@ when "mongodb"
   export_line "MONGODB_BIND_IP", opts[:mongodb_bind_ip]
 when "mongo-backup"
   export_line "MONGO_BACKUP_MONGODB_HOST", opts[:mongo_backup_mongodb_host]
-  export_line "MONGO_BACKUP_LOCK", opts[:mongo_backup_lock]
+  export_line "MONGO_BACKUP_OPLOG", opts[:mongo_backup_oplog]
   export_line "MONGO_BACKUP_HOURLY_KEEP", opts[:mongo_backup_hourly_keep]
   export_line "MONGO_BACKUP_DAILY_KEEP", opts[:mongo_backup_daily_keep]
 else

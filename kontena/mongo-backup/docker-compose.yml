@@ -6,7 +6,7 @@ services:
     environment:
       - INTERVAL=1h
       - MONGODB_HOST=${MONGO_BACKUP_MONGODB_HOST}
-      - MONGODB_LOCK=${MONGO_BACKUP_LOCK}
+      #- MONGODB_OPLOCK=${MONGO_BACKUP_OPLOG} # bug https://github.com/kontena/mongo-backup/issues/4
       - LOCAL_KEEP=${MONGO_BACKUP_HOURLY_KEEP}
     restart: unless-stopped
     volumes:
@@ -17,7 +17,7 @@ services:
     environment:
       - INTERVAL=1d
       - MONGODB_HOST=${MONGO_BACKUP_MONGODB_HOST}
-      - MONGODB_LOCK=${MONGO_BACKUP_LOCK}
+      #- MONGODB_OPLOCK=${MONGO_BACKUP_OPLOG} # bug https://github.com/kontena/mongo-backup/issues/4
       - LOCAL_KEEP=${MONGO_BACKUP_DAILY_KEEP}
     restart: unless-stopped
     volumes:
