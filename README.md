@@ -117,6 +117,19 @@ Optionally to completely clean everything (containers and images) from Docker:
 bin/destroy remote-host-in-ssh-config docker
 ```
 
+### Updating
+
+```
+# ensure that you have the env locally
+bin/cat_env remote-master-in-ssh-config master > kontena/master/env
+# edit the version
+bin/deploy remote-master-in-ssh-config master
+bin/restart remote-master-in-ssh-config master
+```
+
+Same for the node.
+
+
 ## Testing
 
 ```

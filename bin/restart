@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+. "lib/init.sh"
+
+ssh $HOST "cd kontena/$COMPONENT && sudo bin/restart"
