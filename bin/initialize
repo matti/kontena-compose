@@ -10,7 +10,7 @@ set +e
   fi
 set -e
 
-printf "$env_contents" | tee kontena/$COMPONENT/env
+printf "$env_contents\n" | tee kontena/$COMPONENT/env
 
 confirm "hit enter to deploy $COMPONENT to $HOST"
 
