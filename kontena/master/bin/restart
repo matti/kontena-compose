@@ -3,5 +3,4 @@ set -e
 . "../support/common.sh"
 
 docker-compose stop
-docker-compose up -d
-docker-compose logs -f
+bin/start

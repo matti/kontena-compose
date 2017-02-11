@@ -2,16 +2,4 @@
 set -e
 . "../support/common.sh"
 
-opts=""
-if [ "$KONTENA_MASTER_MONGODB_URI" = "mongodb://mongodb:27017/kontena_master" ]; then
-  echo "Creating MongoDB instance"
-  docker-compose up -d mongodb
-#  docker-compose up -d master
-else
-  echo "Not creating MongoDB on this instance, will use $KONTENA_MASTER_MONGODB_URI"
-  opts="--no-deps"
-fi
-
-docker-compose up $opts -d master
-docker-compose up $opts -d haproxy
-docker-compose logs -f master
+bin/start
