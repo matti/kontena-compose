@@ -1,3 +1,5 @@
 .byebug_history
 kontena/master/env
 kontena/node/env
+kontena/mongodb/env
+kontena/mongo-backup/env
