@@ -1,28 +1,23 @@
 version: "2.1"
 
 services:
-  mongo-backup-hourly:
-    image: kontena/mongo-backup
+  mongo-backup:
+    image: mattipaksula/mongo-backup
     environment:
-      - INTERVAL=1h
+      - INTERVAL=${MONGO_BACKUP_INTERVAL}
       - MONGODB_HOST=${MONGO_BACKUP_MONGODB_HOST}
-      #- MONGODB_OPLOCK=${MONGO_BACKUP_OPLOG} # bug https://github.com/kontena/mongo-backup/issues/4
-      - LOCAL_KEEP=${MONGO_BACKUP_HOURLY_KEEP}
+      - MONGODB_OPLOG=${MONGO_BACKUP_OPLOG}
+      - MONGODB_LOCK=${MONGO_BACKUP_LOCK}
+      - LOCAL_KEEP=${MONGO_BACKUP_LOCAL_KEEP}
+      # slack
+      - SLACK_WEBHOOK_URL=${MONGO_BACKUP_SLACK_WEBHOOK_URL}
+      - SLACK_NOTIFY_ON_SUCCESS=${MONGO_BACKUP_SLACK_NOTIFY_ON_SUCCESS}
+      - SLACK_NOTIFY_ON_WARNING=${MONGO_BACKUP_SLACK_NOTIFY_ON_WARNING}
+      - SLACK_NOTIFY_ON_FAILURE=${MONGO_BACKUP_SLACK_NOTIFY_ON_FAILURE}
+      - SLACK_USERNAME=${MONGO_BACKUP_SLACK_USERNAME}
     restart: unless-stopped
     volumes:
-      - mongo_backup_hourly:/backup
-
-  mongo-backup-daily:
-    image: kontena/mongo-backup
-    environment:
-      - INTERVAL=1d
-      - MONGODB_HOST=${MONGO_BACKUP_MONGODB_HOST}
-      #- MONGODB_OPLOCK=${MONGO_BACKUP_OPLOG} # bug https://github.com/kontena/mongo-backup/issues/4
-      - LOCAL_KEEP=${MONGO_BACKUP_DAILY_KEEP}
-    restart: unless-stopped
-    volumes:
-      - mongo_backup_daily:/backup
+      - mongo_backup:/backup
 
 volumes:
-  mongo_backup_hourly:
-  mongo_backup_daily:
+  mongo_backup:

@@ -45,13 +45,25 @@ opts = Slop.parse do |o|
   o.separator "mongo-backup"
   o.string "--mongo-backup-mongodb-host", "MongoDB host [kontena_mongodb_1]",
     default: "kontena_mongodb_1"
+  o.integer "--mongo-backup-local-keep", "Number of local backups to keep [3]",
+    default: 3
+  o.string "--mongo-backup-interval", "Make backup every [1h]",
+    default: "1h"
+  o.boolean "--mongo-backup-lock", "Use LOCK for backup [false]",
+    default: false
   o.boolean "--mongo-backup-oplog", "Use oplog for backup [false]",
     default: false
-  o.integer "--mongo-backup-hourly-keep", "Number of hourly backups to keep [3]",
-    default: 3
-  o.integer "--mongo-backup-daily-keep", "Number of daily backups to keep [7]",
-    default: 7
 
+  o.separator ""
+  o.string "--mongo-backup-slack-webhook-url", "Slack webhook URL"
+  o.string "--mongo-backup-slack-username", "Username for Slack messages [mongo-backup]",
+    default: "mongo-backup"
+  o.string "--mongo-backup-slack-notify-on-success", "Notify on success [true]",
+    default: true
+  o.string "--mongo-backup-slack-notify-on-warning", "Notify on failure [true]",
+    default: true
+  o.string "--mongo-backup-slack-notify-on-failure", "Notify on warning [true]",
+    default: true
 end
 
 def export_line(key, value)
@@ -79,10 +91,17 @@ when "node"
 when "mongodb"
   export_line "MONGODB_BIND_IP", opts[:mongodb_bind_ip]
 when "mongo-backup"
+  export_line "MONGO_BACKUP_INTERVAL", opts[:mongo_backup_interval]
   export_line "MONGO_BACKUP_MONGODB_HOST", opts[:mongo_backup_mongodb_host]
+  export_line "MONGO_BACKUP_LOCK", opts[:mongo_backup_lock]
   export_line "MONGO_BACKUP_OPLOG", opts[:mongo_backup_oplog]
-  export_line "MONGO_BACKUP_HOURLY_KEEP", opts[:mongo_backup_hourly_keep]
-  export_line "MONGO_BACKUP_DAILY_KEEP", opts[:mongo_backup_daily_keep]
+  export_line "MONGO_BACKUP_LOCAL_KEEP", opts[:mongo_backup_local_keep]
+
+  export_line "MONGO_BACKUP_SLACK_WEBHOOK_URL", opts[:mongo_backup_slack_webhook_url]
+  export_line "MONGO_BACKUP_SLACK_USERNAME", opts[:mongo_backup_slack_username]
+  export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_SUCCESS", opts[:mongo_backup_slack_notify_on_success]
+  export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_WARNING", opts[:mongo_backup_slack_notify_on_warning]
+  export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_FAILURE", opts[:mongo_backup_slack_notify_on_failure]
 else
   puts opts
   exit 1
