@@ -14,13 +14,13 @@ opts = Slop.parse do |o|
     default: 1
   o.string "--grid_token", "Token [random32]",
     default: "#{SecureRandom.hex}"
-
+  o.string "--default-affinity", "Default affinity rule for the first grid [label=status==active]",
+    default: "label=status==active"
   o.on '--help', "This help text" do
     puts o
     exit 1
   end
 end
-
 
 master_url = opts.arguments[0]
 admin_email = opts.arguments[1]
@@ -29,6 +29,7 @@ master_name = opts[:master_name]
 grid_name = opts[:grid_name]
 grid_initial_size = opts[:grid_initial_size]
 grid_token = opts[:grid_token]
+default_affinity = opts[:default_affinity]
 
 puts "master name: #{master_name}"
 puts "master url: #{master_url}"
@@ -36,6 +37,7 @@ puts "admin email: #{admin_email}"
 puts "grid name: #{grid_name}"
 puts "grid initial_size: #{grid_initial_size}"
 puts "grid token: #{grid_token}"
+puts "default affinity: #{default_affinity}"
 
 # login with initial admin code
 login_k = Kommando.puts "kontena master login --name #{master_name} --code initialadmincode #{master_url}"
@@ -75,6 +77,6 @@ master_join_k.wait
 
 assert_match master_join_k.out, "Authenticated to Kontena Master"
 
-grid_create_k = Kommando.run "kontena grid create --initial-size #{grid_initial_size} --token #{grid_token} #{grid_name}", {
+grid_create_k = Kommando.run "kontena grid create --initial-size #{grid_initial_size} --token #{grid_token} --default-affinity #{default_affinity} #{grid_name}", {
   output: true
 }
