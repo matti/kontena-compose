@@ -1,9 +1,10 @@
 # kontena-compose
 
-Setups a remote host with SSH to run Kontena with docker-compose.
+Primarily setups a remote host with SSH to run Kontena with docker-compose.
+Also possible to setup Kontena in localhost.
 
 Tested with: Ubuntu 16.04
-Providers tested: boot2docker, Azure, OVH, but should work with any provider (as it's just SSH and docker-compose)
+Providers tested: boot2docker, Azure, OVH, packet.net, but should work with any provider (as it's just SSH and docker-compose)
 
 CoreOS support needs some fixing on the CoreOS itself: https://github.com/kontena/kontena/blob/master/cli/lib/kontena/machine/cloud_config/cloudinit.yml#L22-L40
 

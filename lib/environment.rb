@@ -43,7 +43,7 @@ opts = Slop.parse do |o|
   o.string "--grid_token", "Token [REQUIRED]"
   o.string "--peer_interface", "The peer interface for weave [eth0]",
     default: "eth0"
-  o.string "--node-label", "Node label [status=active]",
+  o.string "--node_label", "Node label [status=active]",
     default: "status=active"
 
   o.separator ""
