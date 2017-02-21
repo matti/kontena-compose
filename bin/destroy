@@ -2,8 +2,17 @@
 set -e
 . "lib/init.sh"
 
-ssh $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
+MASTER_NAME=$1
+
+case $HOST in
+  "localhost")
+    cd kontena/$COMPONENT && bin/destroy && cd ../..
+  ;;
+  *)
+    ssh $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
+  ;;
+esac
 
 if [ "$COMPONENT" == "master" ]; then
- ruby lib/destroy.rb
+  ruby lib/destroy.rb --master_name $MASTER_NAME
 fi

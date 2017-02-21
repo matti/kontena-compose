@@ -7,7 +7,7 @@ Providers tested: boot2docker, Azure, OVH, but should work with any provider (as
 
 CoreOS support needs some fixing on the CoreOS itself: https://github.com/kontena/kontena/blob/master/cli/lib/kontena/machine/cloud_config/cloudinit.yml#L22-L40
 
-## Setup
+## Setup (remote)
 
 Requires Ruby so `bundle install` first.
 
@@ -129,6 +129,17 @@ bin/restart remote-master-in-ssh-config master
 
 Same for the node.
 
+
+## Setup (local)
+
+```
+bin/initialize localhost master --kontena_version 1.1.1 --master_http_port 8080 --master_https_port 8443
+kontena master login --name localmaster --code initialadmincode --expires-in 0 http://localhost:8080
+kontena grid create --token localtoken localgrid
+bin/initialize localhost node --grid_token localtoken --peer_interface en0 --master_uri ws://localhost:8080
+kontena node label add moby lb-ingress
+kontena stack install matti/lb-ingress
+```
 
 ## Testing
 

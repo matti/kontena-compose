@@ -30,6 +30,11 @@ opts = Slop.parse do |o|
     default: "initialadmincode"
   o.string "--master_le_cert_hostname", "Generate Let's Encrypt certificate for hostname (public IP must point to the hostname)"
   o.string "--master_le_cert_email", "Email for certificate notifications"
+  o.string "--master_http_port", "HTTP port to bind [80]",
+    default: 80
+  o.string "--master_https_port", "HTTPS port to bind [443]",
+    default: 443
+
 
   o.separator ""
   o.separator "Node"
@@ -78,6 +83,8 @@ when "master"
   export_line "KONTENA_MASTER_INITIAL_ADMIN_CODE", opts[:master_initial_admin_code]
   export_line "KONTENA_MASTER_LE_CERT_HOSTNAME", opts[:master_le_cert_hostname]
   export_line "KONTENA_MASTER_LE_CERT_EMAIL", opts[:master_le_cert_email]
+  export_line "KONTENA_MASTER_HTTP_PORT", opts[:master_http_port]
+  export_line "KONTENA_MASTER_HTTPS_PORT", opts[:master_https_port]
 when "node"
   unless opts.grid_token?
     puts "ERROR: --grid_token must be given"

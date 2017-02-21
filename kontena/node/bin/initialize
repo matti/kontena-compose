@@ -2,12 +2,19 @@
 set -e
 . "../support/common.sh"
 
-echo "{
-  \"labels\": [\"$KONTENA_NODE_LABEL\"],
-  \"insecure-registries\": [\"10.81.0.0/16\"]
-}" | sudo tee /etc/docker/daemon.json
+case $1 in
+  "localhost")
+    echo "localhost: not setting docker labels or insecure-registries"
+  ;;
+  *)
+    echo "{
+      \"labels\": [\"$KONTENA_NODE_LABEL\"],
+      \"insecure-registries\": [\"10.81.0.0/16\"]
+    }" | sudo tee /etc/docker/daemon.json
 
-sudo systemctl restart docker
+    sudo systemctl restart docker
+  ;;
+esac
 
 docker-compose up -d agent
 docker-compose logs -f agent
