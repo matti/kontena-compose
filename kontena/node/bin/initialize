@@ -4,7 +4,7 @@ set -e
 
 case $1 in
   "localhost")
-    echo "localhost: not setting docker labels or insecure-registries"
+    echo "localhost: not setting docker labels or insecure-registries or DNS resolving"
   ;;
   *)
     echo "{
@@ -12,6 +12,7 @@ case $1 in
       \"insecure-registries\": [\"10.81.0.0/16\"]
     }" | sudo tee /etc/docker/daemon.json
 
+    echo "nameserver 172.17.0.1" | sudo resolvconf -a lo
     sudo systemctl restart docker
   ;;
 esac
