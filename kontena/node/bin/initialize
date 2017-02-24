@@ -12,8 +12,19 @@ case $1 in
       \"insecure-registries\": [\"10.81.0.0/16\"]
     }" | sudo tee /etc/docker/daemon.json
 
-    echo "nameserver 172.17.0.1" | sudo resolvconf -a lo
-    sudo systemctl restart docker
+    docker0_ip=$(ip addr show docker0 | grep "inet " | cut -f6 -d " " | cut -f 0 -d "/")
+    set +e
+    resolvconf=$(hash resolvconf)
+    set -e
+    if [ $resolvconf ]; then
+      echo "nameserver $docker0_ip" | sudo resolvconf -a lo
+      sudo systemctl restart docker
+    else
+      existing_resolv_conf=$(cat /etc/resolv.conf)
+      echo "Adding $docker0_ip as a nameserver on top of /etc/resolv.conf"
+      echo -e "nameserver $docker0_ip
+$existing_resolv_conf" | sudo tee /etc/resolv.conf
+    fi
   ;;
 esac
 
