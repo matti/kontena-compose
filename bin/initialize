@@ -22,7 +22,7 @@ case $HOST in
   "localhost")
     cd kontena/$COMPONENT && bin/initialize localhost
   ;;
-  "*")
+  *)
     ssh $HOST sh kontena/docker/bin/initialize
     ssh $HOST "cd kontena/$COMPONENT && sudo bin/initialize"
   ;;
