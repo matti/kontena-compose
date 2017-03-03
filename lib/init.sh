@@ -1,9 +1,11 @@
-function confirm() {
+#TODO: sh wat
+confirm () {
   if [ "$KONTENA_COMPOSE" = "noninteractive" ]; then
     return
   fi
   printf "\n$1"
-  read
+  # TODO: sh wat
+  read input
 }
 
 HOST=$1

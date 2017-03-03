@@ -13,6 +13,7 @@ case $HOST in
   ;;
 esac
 
-if [ "$COMPONENT" == "master" ]; then
+#TODO: sh wat
+if [ "$COMPONENT" = "master" ]; then
   ruby lib/destroy.rb --master_name $MASTER_NAME
 fi

@@ -12,17 +12,33 @@ case $1 in
       \"insecure-registries\": [\"10.81.0.0/16\"]
     }" | sudo tee /etc/docker/daemon.json
 
-    docker0_ip=$(ip addr show docker0 | grep "inet " | cut -f6 -d " " | cut -f 0 -d "/")
+    echo "testing for GNUness"
     set +e
-    resolvconf=$(hash resolvconf)
+    gnu_is_not_an_idiot=$(echo test | cut -f 0 > /dev/null 2>&1)
     set -e
-    if [ $resolvconf ]; then
+    field_index=0
+    if [ $gnu_is_not_an_idiot ]; then
+      echo "no gnu cut, great"
+    else
+      echo "GNU idiotism found, working around that"
+      field_index=1
+    fi
+
+    docker0_ip=$(ip addr show docker0 | grep "inet " | cut -f 6 -d " " | cut -f $field_index -d "/")
+    echo "docker0 ip: $docker0_ip"
+
+    set +e
+    hash resolvconf
+    set -e
+    if [ "$?" = 0 ]; then
+      echo "Using resolvconf"
       echo "nameserver $docker0_ip" | sudo resolvconf -a lo
       sudo systemctl restart docker
     else
+      echo "Not using resolvconf"
       existing_resolv_conf=$(cat /etc/resolv.conf)
       echo "Adding $docker0_ip as a nameserver on top of /etc/resolv.conf"
-      echo -e "nameserver $docker0_ip
+      echo "nameserver $docker0_ip
 $existing_resolv_conf" | sudo tee /etc/resolv.conf
     fi
   ;;
