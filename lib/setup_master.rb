@@ -6,6 +6,8 @@ opts = Slop.parse do |o|
   o.banner = "usage: bin/setup_master http(s)://master_host admin@email.com"
   o.separator ""
   o.separator "Setup: master"
+  o.string "--initial_admin_code", "[initialadmincode]",
+    default: "initialadmincode"
   o.string "--master_name", "Master name [composemaster]",
     default: "composemaster"
   o.string "--grid_name", "The first grid name [composegrid]",
@@ -25,6 +27,7 @@ end
 master_url = opts.arguments[0]
 admin_email = opts.arguments[1]
 
+initial_admin_code = opts[:initial_admin_code]
 master_name = opts[:master_name]
 grid_name = opts[:grid_name]
 grid_initial_size = opts[:grid_initial_size]
@@ -34,13 +37,14 @@ default_affinity = opts[:default_affinity]
 puts "master name: #{master_name}"
 puts "master url: #{master_url}"
 puts "admin email: #{admin_email}"
+puts "initial admin code: #{initial_admin_code}"
 puts "grid name: #{grid_name}"
 puts "grid initial_size: #{grid_initial_size}"
 puts "grid token: #{grid_token}"
 puts "default affinity: #{default_affinity}"
 
 # login with initial admin code
-login_k = Kommando.puts "kontena master login --name #{master_name} --code initialadmincode #{master_url}"
+login_k = Kommando.puts "kontena master login --name #{master_name} --code #{initial_admin_code} #{master_url}"
 assert_match login_k.out, ""
 
 # init cloud
