@@ -6,6 +6,5 @@ set +e
 docker-compose stop -t 0
 docker-compose down -v
 
-docker volume rm "${COMPOSE_PROJECT_NAME}_mongo_backup_hourly"
-docker volume rm "${COMPOSE_PROJECT_NAME}_mongo_backup_daily"
+docker volume rm "mongo_backup"
 set -e
