@@ -7,12 +7,12 @@ case $HOST in
     echo "Using localhost, not deploying."
   ;;
   *)
-    ssh $HOST "mkdir -p kontena kontena/lib kontena/docker kontena/$COMPONENT"
+    $SSH_CMD $HOST "mkdir -p kontena kontena/lib kontena/docker kontena/$COMPONENT"
 
     echo "\nMaking sure that $HOST is up to date for $COMPONENT ..."
-    rsync -av -e ssh --delete-after kontena/support/ $HOST:kontena/support/
-    rsync -av -e ssh --delete-after kontena/docker/ $HOST:kontena/docker/
-    rsync -av -e ssh --delete-after kontena/$COMPONENT/ $HOST:kontena/$COMPONENT/
+    rsync -av -e "$SSH_CMD" --delete-after kontena/support/ $HOST:kontena/support/
+    rsync -av -e "$SSH_CMD" --delete-after kontena/docker/ $HOST:kontena/docker/
+    rsync -av -e "$SSH_CMD" --delete-after kontena/$COMPONENT/ $HOST:kontena/$COMPONENT/
 
     echo "$HOST up to date for $COMPONENT."
   ;;

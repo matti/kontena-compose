@@ -13,4 +13,9 @@ fi
 
 docker-compose up $opts -d master
 docker-compose up $opts -d haproxy
-docker-compose logs -f master
+
+if [ "$KONTENA_COMPOSE" = "noninteractive" ]; then
+  docker-compose logs master
+else
+  docker-compose logs -f master
+fi

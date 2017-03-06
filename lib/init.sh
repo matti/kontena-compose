@@ -12,6 +12,15 @@ HOST=$1
 COMPONENT=$2
 shift; shift
 
+case "$HOST" in
+  "vagrant")
+    SSH_CMD="ssh -F vagrant/config"
+  ;;
+  *)
+    SSH_CMD="ssh"
+  ;;
+esac
+
 case "$COMPONENT" in
   "master")
   ;;

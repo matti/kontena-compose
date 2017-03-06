@@ -114,5 +114,6 @@ else
   exit 1
 end
 
+export_line "KONTENA_COMPOSE", ENV['KONTENA_COMPOSE']
 export_line "COMPOSE_PROJECT_NAME", opts[:compose_project_name]
 export_line "KONTENA_VERSION", opts[:kontena_version]

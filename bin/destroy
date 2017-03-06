@@ -9,7 +9,7 @@ case $HOST in
     cd kontena/$COMPONENT && bin/destroy && cd ../..
   ;;
   *)
-    ssh $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
+    $SSH_CMD $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
   ;;
 esac
 

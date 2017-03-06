@@ -1,0 +1,5 @@
+---
+image: weaveworks/scope:0.17.1
+lb_service: lb-ingress/lb
+lb_domain: weavescope.kontena.rocks
+lb_https_redirect: false

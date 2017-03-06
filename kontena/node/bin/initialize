@@ -44,4 +44,9 @@ esac
 
 echo "Starting kontena-agent"
 docker-compose up -d agent
-docker-compose logs -f agent
+
+if [ "$KONTENA_COMPOSE" = "noninteractive" ]; then
+  docker-compose logs agent
+else
+  docker-compose logs -f agent
+fi

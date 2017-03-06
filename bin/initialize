@@ -23,7 +23,7 @@ case $HOST in
     cd kontena/$COMPONENT && bin/initialize localhost
   ;;
   *)
-    ssh $HOST sh kontena/docker/bin/initialize
-    ssh $HOST "cd kontena/$COMPONENT && sudo bin/initialize"
+    $SSH_CMD $HOST sh kontena/docker/bin/initialize
+    $SSH_CMD $HOST "cd kontena/$COMPONENT && sudo bin/initialize"
   ;;
 esac

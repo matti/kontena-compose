@@ -1,0 +1,4 @@
+Host vagrant
+  HostName kontena.rocks
+  User vagrant
+  IdentityFile .vagrant/machines/default/virtualbox/private_key
