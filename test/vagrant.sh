@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 export KONTENA_COMPOSE=noninteractive
 
 case $1 in
@@ -37,6 +36,8 @@ case $1 in
   "kontena")
     case $2 in
       "destroy")
+        curl --connect-timeout 1 kontena.rocks:22 || exit 0
+
         bin/destroy vagrant node
         bin/destroy vagrant master
         kontena master rm --force vagrant
@@ -102,20 +103,24 @@ case $1 in
     esac
   ;;
 
+  "all")
+    $0 vagrant up
+    $0 vagrant upgrade
+    $0 kontena master
+    $0 kontena login
+    $0 kontena node
+    $0 stack lb
+    $0 stack weavescope
+    $0 stack -weavescope
+    $0 stack -lb
+  ;;
+
   "recreate")
     case $2 in
       "all")
         $0 kontena destroy
         $0 vagrant destroy
-        $0 vagrant up
-        $0 vagrant upgrade
-        $0 kontena master
-        $0 kontena login
-        $0 kontena node
-        $0 stack lb
-        $0 stack weavescope
-        $0 stack -weavescope
-        $0 stack -lb
+        $0 all
       ;;
       "from-master")
         $0 kontena +master
