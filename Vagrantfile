@@ -5,6 +5,26 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+
+def adjusted_machine_specs
+  case RbConfig::CONFIG['host_os']
+  when /darwin/
+    {
+      cpus: Integer(`sysctl -n hw.ncpu`) - 1,
+      mem: Integer(`sysctl -n hw.memsize`) / 1024 / 1024 / 2
+    }
+  when /linux/
+    {
+      cpus: Integer(`cat /proc/cpuinfo | grep processor | wc -l`) / 4,
+      mem: 4096 #TODO
+    }
+  else
+    raise StandardError, "Unsupported platform"
+  end
+end
+
+
 Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
@@ -47,8 +67,8 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.name = "kontena"
     vb.linked_clone = true
-    vb.cpus = 4
-    vb.memory = "2048"
+    vb.cpus = adjusted_machine_specs[:cpus]
+    vb.memory = adjusted_machine_specs[:mem]
 
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
@@ -74,4 +94,6 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+  config.vm.provision "shell", path: "vagrant/provision.sh"
 end
