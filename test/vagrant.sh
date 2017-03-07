@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 export KONTENA_COMPOSE=noninteractive
 
 case $1 in
@@ -14,15 +15,17 @@ case $1 in
       ;;
       "+up")
         $0 kontena destroy
-        vagrant snapsot restore vagrant-up
+        vagrant snapshot restore vagrant-up
       ;;
       "upgrade")
         vagrant ssh -c "sudo apt-get update"
         vagrant ssh -c "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y"
-        vagrant ssh -c "sudo reboot"
+        set +e
+          vagrant ssh -c "sudo reboot"
+        set -e
         while true; do
           vagrant ssh -c "uptime" && break
-          print "."
+          printf "."
           sleep 1
         done
         vagrant snapshot save vagrant-upgrade
