@@ -26,14 +26,16 @@ case $1 in
     echo "docker0 ip: $docker0_ip"
 
     resolvconf_contents=$(cat /etc/resolv.conf)
-
     case "$resolvconf_contents" in
       *"$docker0_ip"*)
         echo "$docker0_ip exists in /etc/resolv.conf"
       ;;
       *)
-        echo "Using resolvconf to add docker0 to /etc/resolv.conf"
-        echo "nameserver $docker0_ip" | sudo resolvconf -a lo
+        echo "Appeding $docker0_ip to /etc/resolvconf/resolv.conf.d/head"
+        echo "nameserver $docker0_ip" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
+
+        echo "updating resolvconf"
+        resolvconf -u
 
         echo "Restarting Docker"
         sudo systemctl restart docker
