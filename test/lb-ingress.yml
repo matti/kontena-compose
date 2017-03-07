@@ -1,4 +1,5 @@
 ---
+affinity: true
 lb_affinity: label==lb-ingress
 lb_certs: []
 lb_stats_password: 5JhluXrW4tad
