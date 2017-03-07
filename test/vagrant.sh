@@ -73,6 +73,9 @@ case $1 in
         kontena node ls
         echo ""
       ;;
+
+      #NOTE: node snapshotting doesn't work because of the network interfaces (weave)...?
+
       "-node")
         bin/destroy vagrant node
         kontena node rm --force vagrant

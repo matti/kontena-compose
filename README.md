@@ -180,8 +180,8 @@ https traffic needs to be allowed from anywhere (https://community.letsencrypt.o
 
 ```
 # put vagrant/docker.service to /lib/systemd/system/docker.service
-systemctl daemon-reload
-systemctl docker restart
-
+cat vagrant/docker.service | vagrant ssh -c "sudo tee /lib/systemd/system/docker.service"
+vagrant ssh -c "sudo systemctl daemon-reload && sudo systemctl restart docker"
+curl 192.168.81.10:2375/v1.24/version
 # DOCKER_HOST=tcp://192.168.81.10
 ```
