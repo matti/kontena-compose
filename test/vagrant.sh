@@ -36,7 +36,7 @@ case $1 in
   "kontena")
     case $2 in
       "destroy")
-        curl --connect-timeout 1 kontena.rocks:22 || exit 0
+        curl --connect-timeout 1 192.168.81.10:22 || exit 0
 
         bin/destroy vagrant node
         bin/destroy vagrant master
@@ -45,7 +45,7 @@ case $1 in
       "master")
         bin/initialize vagrant master --kontena_version 1.1.2 --master_http_port 8080 --master_https_port 8443
         while true; do
-          curl --silent kontena.rocks:8080 && break
+          curl --silent 192.168.81.10:8080 && break
           printf "."
           sleep 1
         done
@@ -57,7 +57,7 @@ case $1 in
         vagrant snapshot restore kontena-master
       ;;
       "login")
-        kontena master login -e 0 -c initialadmincode -n vagrant http://kontena.rocks:8080
+        kontena master login -e 0 -c initialadmincode -n vagrant http://192.168.81.10:8080
         kontena grid create --token vagrant vagrant
       ;;
       "node")

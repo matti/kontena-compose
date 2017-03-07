@@ -1,4 +1,4 @@
 Host vagrant
-  HostName kontena.rocks
+  HostName 192.168.81.10
   User vagrant
   IdentityFile .vagrant/machines/default/virtualbox/private_key
