@@ -174,3 +174,14 @@ kontena cloud master ls | grep 588 | cut -f1 -d" " | xargs -L 1 kontena cloud ma
 ### Let's Encrypt firewall
 
 https traffic needs to be allowed from anywhere (https://community.letsencrypt.org/t/lets-encrypt-and-firewall-rules/18641)
+
+
+### vagrant as a docker machine
+
+```
+# put vagrant/docker.service to /lib/systemd/system/docker.service
+systemctl daemon-reload
+systemctl docker restart
+
+# DOCKER_HOST=tcp://192.168.81.10
+```
