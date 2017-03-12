@@ -1,12 +1,10 @@
 # kontena-compose
 
 Primarily setups a remote host with SSH to run Kontena with docker-compose.
-Also possible to setup Kontena in localhost.
 
 Tested with: Ubuntu 16.04
-Providers tested: boot2docker, Azure, OVH, packet.net, but should work with any provider (as it's just SSH and docker-compose)
+Providers tested: AWS, DigitalOcean, Azure, OVH, packet.net, but should work with any provider (as it's just SSH and docker-compose)
 
-CoreOS support needs some fixing on the CoreOS itself: https://github.com/kontena/kontena/blob/master/cli/lib/kontena/machine/cloud_config/cloudinit.yml#L22-L40
 
 ## Setup (remote)
 
@@ -17,21 +15,13 @@ Make your host(s) accessible with SSH by having `.ssh/config` setup.
 For example if you want to run locally on docker-machine:
 
 ```
-Host docker-machine
-  HostName 192.168.99.100
-  User docker
-  IdentityFile ~/.docker/machine/machines/default/id_rsa
+Host myhost
+  HostName myhost.providercloud.com
+  User user
+  IdentityFile ~/.ssh/my_identity
 ```
 
-Or any remote host:
-
-```
-Host your-remote-host
-  HostName 123.123.123.123
-  User core
-```
-
-Verify that `ssh your-remote-host` works without a password.
+Verify that `ssh myhost` works without a password.
 
 ## Installing master
 
@@ -39,21 +29,20 @@ Verify that `ssh your-remote-host` works without a password.
 
 ```
 # To use the defaults (:latest Kontena etc)
-bin/initialize remote-host-in-ssh-config master
+bin/initialize myhost master
 
 # .. or to specify a version:
-bin/initialize remote-host-in-ssh-config master --kontena_version 1.0.6
+bin/initialize myhost master --kontena_version 1.1.4
 
 # .. or to create a certificate automagically with Let's Encrypt SSL:
-bin/initialize remote-host-in-ssh-config master \
-  --kontena_version 1.0.6 \
+bin/initialize myhost master \
+  --kontena_version 1.1.4 \
   --master_le_cert_hostname myhostname-that-points-to-the-public-ip-of-master.example.com \
   --master_le_cert_email notifications@fromletsencryptaresenthere.com
 
 # .. for even more settings:
 bin/initialize remote-host-in-ssh-config master --help
 ```
-
 
 Master will boot and then logs will be shown -- hit ^C when the master has booted (will only disconnect from logs that can be seen with `bin/logs remote-host-in-ssh-config master`)
 
@@ -71,16 +60,19 @@ bin/setup_master http(s?)://public_ip_or_hostname_of_the_master your.kontena@clo
   --grid_name mygrid \
   --grid_initial_size 3 \
   --grid_token mybettertoken
+
+# .. all settings
+bin/setup_master --help
 ```
 
 ## Adding node(s)
 
 ```
 # To use the defaults (connects to master running in ws://localhost (one machine will be both master and node))
-bin/initialize remote-host-in-ssh-config node
+bin/initialize mynodehost node
 
 # .. or to specify settings
-bin/initialize remote-host-in-ssh-config node \
+bin/initialize mynodehost node \
   --kontena_version 1.0.6 \
   --master_uri ws(s?)://public_ip_or_hostname_of_the_master \
   --grid_token mybettertoken
@@ -104,49 +96,39 @@ kontena service logs redis
 
 To remove nodes (run docker-compose down) use:
 ```
-bin/destroy remote-node1-in-ssh-config node1
-bin/destroy remote-node2-in-ssh-config node2
+bin/destroy mynodehost node
 ```
 
 To remove master AND the entry for the master in Kontena Cloud use:
 ```
-bin/destroy remote-master-in-ssh-config master
+bin/destroy myhost master
 ```
 
 Optionally to completely clean everything (containers and images) from Docker:
 ```
-bin/destroy remote-host-in-ssh-config docker
+bin/destroy myhost docker
 ```
 
 ### Updating
 
 ```
 # ensure that you have the env locally
-bin/cat_env remote-master-in-ssh-config master > kontena/master/env
+bin/cat_env myhostg master > kontena/master/env
 # edit the version
-bin/deploy remote-master-in-ssh-config master
-bin/restart remote-master-in-ssh-config master
+bin/deploy myhostg master
+bin/restart myhostg master
 ```
 
-Same for the node.
+And the same for the node.
 
 
 ## Setup (local)
 
-```
-bin/initialize localhost master --kontena_version 1.1.1 --master_http_port 8080 --master_https_port 8443
-kontena master login --name localmaster --code initialadmincode --expires-in 0 http://localhost:8080
-kontena grid create --token localtoken localgrid
-bin/initialize localhost node --grid_token localtoken --peer_interface en0 --master_uri ws://localhost:8080
-kontena node label add moby lb-ingress
-kontena stack install matti/lb-ingress
-```
-
 ## Testing
 
-```
-ruby test/defaults.rb docker-machine http://192.168.99.100 admin@email.com
-```
+- vagrant 1.9.2
+
+`test/vagrant.sh all`
 
 ## PRO-TIPS
 
@@ -183,5 +165,5 @@ https traffic needs to be allowed from anywhere (https://community.letsencrypt.o
 cat vagrant/docker.service | vagrant ssh -c "sudo tee /lib/systemd/system/docker.service"
 vagrant ssh -c "sudo systemctl daemon-reload && sudo systemctl restart docker"
 curl 192.168.81.10:2375/v1.24/version
-# DOCKER_HOST=tcp://192.168.81.10
+# DOCKER_HOST=tcp://192.168.81.10:2375
 ```
