@@ -50,7 +50,7 @@ case $1 in
         kontena master rm --force vagrant
       ;;
       "master")
-        bin/initialize vagrant master --kontena_version 1.1.2 --master_http_port 8080 --master_https_port 8443
+        bin/initialize vagrant master --kontena_version 1.1.4 --master_http_port 8080 --master_https_port 8443
         while true; do
           curl --silent 192.168.81.10:8080 && break
           printf "."
@@ -68,7 +68,7 @@ case $1 in
         kontena grid create --token vagrant vagrant
       ;;
       "node")
-        bin/initialize vagrant node --kontena_version 1.1.2 --master_uri ws://localhost:8080 --grid_token vagrant
+        bin/initialize vagrant node --kontena_version 1.1.4 --master_uri ws://localhost:8080 --grid_token vagrant
         while true; do
           if [ "$(kontena node ls | grep vagrant)" = "" ]; then
             printf "."
