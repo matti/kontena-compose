@@ -9,7 +9,7 @@ GEM
     excon (0.49.0)
     hash_validator (0.7.0)
     kommando (0.0.22)
-    kontena-cli (1.1.2)
+    kontena-cli (1.1.4)
       clamp (~> 1.1.0)
       excon (~> 0.49.0)
       hash_validator (~> 0.7.0)
@@ -50,7 +50,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   kommando
-  kontena-cli (= 1.1.2)
+  kontena-cli (= 1.1.4)
   slop
 
 BUNDLED WITH
