@@ -27,6 +27,11 @@ end
 master_url = opts.arguments[0]
 admin_email = opts.arguments[1]
 
+unless master_url && admin_email
+  puts opts
+  exit 1
+end
+
 initial_admin_code = opts[:initial_admin_code]
 master_name = opts[:master_name]
 grid_name = opts[:grid_name]
