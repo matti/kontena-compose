@@ -12,6 +12,10 @@ case $1 in
       "up")
         vagrant up
         vagrant snapshot save vagrant-up
+
+        ssh-keygen -R 192.168.81.10
+        ssh-keyscan -H 192.168.81.10 >> ~/.ssh/known_hosts
+        ssh -F vagrant/config vagrant uptime
       ;;
       "+up")
         $0 kontena destroy
