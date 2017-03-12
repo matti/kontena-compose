@@ -114,6 +114,7 @@ case $1 in
   ;;
 
   "all")
+    bundle install
     $0 vagrant up
     $0 vagrant upgrade
     $0 kontena master
