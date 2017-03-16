@@ -16,8 +16,8 @@ opts = Slop.parse do |o|
     default: 1
   o.string "--grid_token", "Token [random32]",
     default: "#{SecureRandom.hex}"
-  o.string "--default_affinity", "Default affinity rule for the first grid [label=status==active]",
-    default: "label=status==active"
+  o.string "--default_affinity", "Default affinity rule for the first grid [label==status=active]",
+    default: "label==status=active"
   o.on '--help', "This help text" do
     puts o
     exit 1
