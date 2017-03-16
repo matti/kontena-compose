@@ -12,4 +12,10 @@ for ORPHAN_CONTAINER in "kontena-etcd kontena-ipam-plugin weave kontena-cadvisor
   set -e
 done
 
+set +e
+  docker ps -aq -f name=weavewait | xargs docker rm
+  docker ps -aq -f name=kontena-etcd-data | xargs docker rm
+  docker ps -aq -f name=weavedb | xargs docker rm
+set -e
+
 echo "destroyed."
