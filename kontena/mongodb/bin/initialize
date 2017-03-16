@@ -3,4 +3,9 @@ set -e
 . "../support/common.sh"
 
 docker-compose up -d mongodb
-docker-compose logs -f mongodb
+
+if [ "$KONTENA_COMPOSE" = "noninteractive" ]; then
+  docker-compose logs mongodb
+else
+  docker-compose logs -f mongodb
+fi
