@@ -4,3 +4,4 @@ kontena/master/env
 kontena/node/env
 kontena/mongodb/env
 kontena/mongo-backup/env
+kontena/lb/env

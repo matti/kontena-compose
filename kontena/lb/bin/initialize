@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+. "../support/common.sh"
+
+docker-compose up -d lb
+
+if [ "$KONTENA_COMPOSE" = "noninteractive" ]; then
+  docker-compose logs lb
+else
+  docker-compose logs -f lb
+fi

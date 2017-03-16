@@ -69,6 +69,10 @@ opts = Slop.parse do |o|
     default: true
   o.string "--mongo-backup-slack-notify-on-failure", "Notify on warning [true]",
     default: true
+
+  o.separator ""
+  o.separator "lb"
+  o.string "--lb_backends", "Backends"
 end
 
 def export_line(key, value)
@@ -109,6 +113,8 @@ when "mongo-backup"
   export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_SUCCESS", opts[:mongo_backup_slack_notify_on_success]
   export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_WARNING", opts[:mongo_backup_slack_notify_on_warning]
   export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_FAILURE", opts[:mongo_backup_slack_notify_on_failure]
+when "lb"
+  export_line "LB_BACKENDS", "DNS name containing all backends as A records", opts[:lb_backends]
 else
   puts opts
   exit 1
