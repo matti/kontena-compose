@@ -1,6 +1,13 @@
 require "slop"
 require "securerandom"
 
+def exit_if_option_missing(opts, opt)
+  return if opts[opt]
+
+  puts "ERROR: --#{opt.to_s} must be given"
+  exit 1
+end
+
 opts = Slop.parse do |o|
   o.separator ""
   o.separator "Generic"
@@ -90,10 +97,7 @@ when "master"
   export_line "KONTENA_MASTER_HTTP_PORT", opts[:master_http_port]
   export_line "KONTENA_MASTER_HTTPS_PORT", opts[:master_https_port]
 when "node"
-  unless opts.grid_token?
-    puts "ERROR: --grid_token must be given"
-    exit 1
-  end
+  exit_if_option_missing(opts, :grid_token)
 
   export_line "KONTENA_MASTER_URI", opts[:master_uri]
   export_line "KONTENA_GRID_TOKEN", opts[:grid_token]
@@ -114,6 +118,8 @@ when "mongo-backup"
   export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_WARNING", opts[:mongo_backup_slack_notify_on_warning]
   export_line "MONGO_BACKUP_SLACK_NOTIFY_ON_FAILURE", opts[:mongo_backup_slack_notify_on_failure]
 when "lb"
+  exit_if_option_missing(opts, :lb_backends)
+
   export_line "LB_BACKENDS", opts[:lb_backends]
 else
   puts opts
