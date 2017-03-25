@@ -72,7 +72,7 @@ opts = Slop.parse do |o|
 
   o.separator ""
   o.separator "lb"
-  o.string "--lb_backends", "DNS name containing all backends as A records (e.g. backends.example.com:80)"
+  o.string "--lb_backends", "DNS name containing all backends as A records (e.g. backends.example.com) [REQUIRED]"
 end
 
 def export_line(key, value)

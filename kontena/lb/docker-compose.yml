@@ -1,14 +1,21 @@
 version: "2.1"
 
 services:
-  lb:
+  lb_tcp80:
     image: kontena/haproxy:latest
-    environment:
     restart: unless-stopped
     environment:
+      - MODE=tcp
       - FRONTEND_PORT=80
-      - BACKENDS=${LB_BACKENDS}
-      - SSL_CERT=**None**
+      - BACKENDS=${LB_BACKENDS}:80
     ports:
       - 80:80
+  lb_tcp443:
+    image: kontena/haproxy:latest
+    restart: unless-stopped
+    environment:
+      - MODE=tcp
+      - FRONTEND_PORT=443
+      - BACKENDS=${LB_BACKENDS}:443
+    ports:
       - 443:443
