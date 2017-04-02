@@ -24,6 +24,8 @@ opts = Slop.parse do |o|
   o.separator "Mongo"
   o.string "--mongodb_bind_ip", "MongoDB bind IP [0.0.0.0]",
     default: "0.0.0.0"
+  o.string "--mongodb_port", "MongoDB port [27017]",
+    default: 27017
 
   o.separator ""
   o.separator "Master"
@@ -105,6 +107,7 @@ when "node"
   export_line "KONTENA_NODE_LABEL", opts[:node_label]
 when "mongodb"
   export_line "MONGODB_BIND_IP", opts[:mongodb_bind_ip]
+  export_line "MONGODB_PORT", opts[:mongodb_port]
 when "mongo-backup"
   export_line "MONGO_BACKUP_INTERVAL", opts[:mongo_backup_interval]
   export_line "MONGO_BACKUP_MONGODB_HOST", opts[:mongo_backup_mongodb_host]

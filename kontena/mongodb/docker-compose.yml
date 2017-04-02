@@ -8,7 +8,7 @@ services:
     volumes:
       - mongodb_master:/data/db
     ports:
-      - 27017:27017
+      - ${MONGODB_PORT}:27017
 
 volumes:
   mongodb_master:
