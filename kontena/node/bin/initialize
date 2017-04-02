@@ -7,40 +7,33 @@ exists()
   command -v "$1" >/dev/null 2>&1
 }
 
-case $1 in
-  "localhost")
-    echo "localhost: not setting docker labels or insecure-registries or DNS resolving"
-  ;;
-  *)
-    if [ "$(cat /etc/docker/daemon.json | grep insecure)" = "" ]; then
-      echo "Writing dockerd labels and insucre registries to /etc/docker/daemon.json"
-      echo "{
+if [ "$(sudo cat /etc/docker/daemon.json | grep insecure)" = "" ]; then
+  echo "Writing dockerd labels and insucre registries to /etc/docker/daemon.json"
+  echo "{
   \"labels\": [\"$KONTENA_NODE_LABEL\"],
   \"insecure-registries\": [\"10.81.0.0/16\"]
 }" | sudo tee /etc/docker/daemon.json
-    else
-      echo "dockerd already configured."
-    fi
+else
+  echo "dockerd already configured."
+fi
 
-    docker0_ip=$(ip addr show docker0 | grep "inet " | cut -f 6 -d " " | cut -f 1 -d "/")
-    echo "docker0 ip: $docker0_ip"
+docker0_ip=$(ip addr show docker0 | grep "inet " | cut -f 6 -d " " | cut -f 1 -d "/")
+echo "docker0 ip: $docker0_ip"
 
-    resolvconf_contents=$(cat /etc/resolv.conf)
-    case "$resolvconf_contents" in
-      *"$docker0_ip"*)
-        echo "$docker0_ip exists in /etc/resolv.conf"
-      ;;
-      *)
-        echo "Appeding $docker0_ip to /etc/resolvconf/resolv.conf.d/head"
-        echo "nameserver $docker0_ip" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
+resolvconf_contents=$(cat /etc/resolv.conf)
+case "$resolvconf_contents" in
+  *"$docker0_ip"*)
+    echo "$docker0_ip exists in /etc/resolv.conf"
+  ;;
+  *)
+    echo "Appeding $docker0_ip to /etc/resolvconf/resolv.conf.d/head"
+    echo "nameserver $docker0_ip" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 
-        echo "updating resolvconf"
-        resolvconf -u
+    echo "updating resolvconf"
+    sudo resolvconf -u
 
-        echo "Restarting Docker"
-        sudo systemctl restart docker
-      ;;
-    esac
+    echo "Restarting Docker"
+    sudo systemctl restart docker
   ;;
 esac
 

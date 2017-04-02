@@ -4,14 +4,7 @@ set -e
 
 MASTER_NAME=$1
 
-case $HOST in
-  "localhost")
-    cd kontena/$COMPONENT && bin/destroy && cd ../..
-  ;;
-  *)
-    $SSH_CMD $HOST "cd kontena/$COMPONENT && sudo bin/destroy"
-  ;;
-esac
+$SSH_CMD $HOST "cd kontena/$COMPONENT && bin/destroy"
 
 #TODO: sh wat
 if [ "$COMPONENT" = "master" ]; then

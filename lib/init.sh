@@ -17,7 +17,7 @@ case "$HOST" in
     SSH_CMD="ssh -F vagrant/config"
   ;;
   *)
-    SSH_CMD="ssh"
+    SSH_CMD="ssh -t"
   ;;
 esac
 

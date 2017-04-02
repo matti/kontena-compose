@@ -18,12 +18,5 @@ bin/deploy $HOST $COMPONENT
 
 confirm "\n\nhit enter to initialize $COMPONENT at $HOST"
 
-case $HOST in
-  "localhost")
-    cd kontena/$COMPONENT && bin/initialize localhost
-  ;;
-  *)
-    $SSH_CMD $HOST sh kontena/docker/bin/initialize
-    $SSH_CMD $HOST "cd kontena/$COMPONENT && sudo bin/initialize"
-  ;;
-esac
+$SSH_CMD $HOST sh kontena/docker/bin/initialize
+$SSH_CMD $HOST "cd kontena/$COMPONENT && bin/initialize"
