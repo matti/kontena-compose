@@ -136,7 +136,7 @@ And the same for the node.
 
 ```ruby
 bin/initialize localhost master --kontena_version 1.1.6 --master_http_port 9292 --master_https_port 9293
-bin/setup_master http://localhost:9292 matti.paksula@iki.fi --master_name localhost --grid_name localhost --grid_token localhost
+bin/setup_master http://localhost:9292  your.kontena@cloud.email.com --master_name localhost --grid_name localhost --grid_token localhost
 bin/initialize localhost node --kontena_version 1.1.6 --master_uri ws://localhost:9292 --grid_token localhost
 
 ```
