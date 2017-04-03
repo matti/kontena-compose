@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.5.0)
+    addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     byebug (9.0.6)
     clamp (1.1.2)
@@ -9,7 +9,7 @@ GEM
     excon (0.49.0)
     hash_validator (0.7.0)
     kommando (0.0.22)
-    kontena-cli (1.1.4)
+    kontena-cli (1.1.6)
       clamp (~> 1.1.0)
       excon (~> 0.49.0)
       hash_validator (~> 0.7.0)
@@ -37,7 +37,7 @@ GEM
     slop (4.4.1)
     tty-color (0.4.2)
     tty-cursor (0.4.0)
-    tty-prompt (0.11.0)
+    tty-prompt (0.12.0)
       necromancer (~> 0.4.0)
       pastel (~> 0.7.0)
       tty-cursor (~> 0.4.0)
@@ -50,7 +50,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   kommando
-  kontena-cli (= 1.1.4)
+  kontena-cli (= 1.1.6)
   slop
 
 BUNDLED WITH
