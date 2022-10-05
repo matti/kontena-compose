@@ -1,8 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.5.0)
-      public_suffix (~> 2.0, >= 2.0.2)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     byebug (9.0.6)
     clamp (1.1.2)
     equatable (0.5.0)
@@ -29,7 +29,7 @@ GEM
     pastel (0.7.1)
       equatable (~> 0.5.0)
       tty-color (~> 0.4.0)
-    public_suffix (2.0.5)
+    public_suffix (5.0.0)
     retriable (2.1.0)
     ruby_dig (0.0.2)
     safe_yaml (1.0.4)
